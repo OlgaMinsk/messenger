@@ -47,7 +47,7 @@ public class MainServiceCSVImpl implements MainService {
             messageService.updateMessage(id, message);
             bot.print("Done");
         } catch (NotFoundException e) {
-            bot.print("Can't delete the message (can't find such a message)");
+            bot.print("Can't update the message (can't find such a message)");
         }
     }
 
