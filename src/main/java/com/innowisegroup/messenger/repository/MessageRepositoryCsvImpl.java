@@ -1,7 +1,10 @@
 package com.innowisegroup.messenger.repository;
 
 import com.innowisegroup.messenger.exception.NotFoundException;
+import com.innowisegroup.messenger.model.CommandEnum;
 import com.innowisegroup.messenger.model.Message;
+import com.innowisegroup.messenger.view.Bot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.constraint.Unique;
@@ -24,6 +27,13 @@ import java.util.Set;
 @Repository
 public class MessageRepositoryCsvImpl implements MessageRepository {
     private final static String FILE_NAME = "/home/user/IdeaProjects/messenger/src/main/resources/messages.csv";
+
+    Bot bot;
+
+    @Autowired
+    public MessageRepositoryCsvImpl(Bot bot) {
+        this.bot = bot;
+    }
 
     @Override
     public List<Message> getAll() {
@@ -55,7 +65,7 @@ public class MessageRepositoryCsvImpl implements MessageRepository {
         if (existById(id)) {
             return getAllMessages().get(id);
         }
-        throw new NotFoundException("Can't find message with id =" + id);
+        throw new NotFoundException(bot.returnDescriptionOfException(CommandEnum.CAN_NOT_FIND_MESSAGE_BY_ID) + id);
     }
 
     @Override
@@ -65,7 +75,7 @@ public class MessageRepositoryCsvImpl implements MessageRepository {
             messageMap.remove(id);
             saveAllMessages(toList(messageMap));
         } else {
-            throw new NotFoundException("Can't find message with id =" + id);
+            throw new NotFoundException(bot.returnDescriptionOfException(CommandEnum.CAN_NOT_FIND_MESSAGE_BY_ID) + id);
         }
     }
 
@@ -77,7 +87,7 @@ public class MessageRepositoryCsvImpl implements MessageRepository {
             messageMap.put(id, message);
             saveAllMessages(toList(messageMap));
         } else {
-            throw new NotFoundException("Can't find message with id =" + id);
+            throw new NotFoundException(bot.returnDescriptionOfException(CommandEnum.CAN_NOT_FIND_MESSAGE_BY_ID) + id);
         }
     }
 
@@ -117,7 +127,8 @@ public class MessageRepositoryCsvImpl implements MessageRepository {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         } catch (NumberFormatException exception) {
-            throw new RuntimeException("Please check the id in the file. Id must be a number", exception);
+
+            throw new RuntimeException(bot.returnDescriptionOfException(CommandEnum.CHECK_ID), exception);
         }
         return messageMap;
     }

@@ -10,4 +10,6 @@ public interface MainService {
     void deleteMessage();
 
     void defaultMethod();
+
+    void changeLanguage();
 }

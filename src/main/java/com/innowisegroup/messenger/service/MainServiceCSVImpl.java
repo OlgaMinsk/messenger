@@ -7,8 +7,11 @@ import com.innowisegroup.messenger.view.Bot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
 @Service
 public class MainServiceCSVImpl implements MainService {
+
     private final MessageService messageService;
     private final Bot bot;
 
@@ -25,46 +28,64 @@ public class MainServiceCSVImpl implements MainService {
 
     @Override
     public void createNewMessage() {
-        bot.print(CommandEnum.ENTER_NAME.getMessage());
+        bot.print(CommandEnum.ENTER_NAME);
         String name = bot.read();
-        bot.print(CommandEnum.ENTER_TEXT.getMessage());
+        bot.print(CommandEnum.ENTER_TEXT);
         String text = bot.read();
         Message message = new Message(name, text);
         messageService.saveMessage(message);
-        bot.print("Done");
+        bot.print(CommandEnum.DONE);
     }
 
     @Override
     public void updateMessage() {
         try {
-            bot.print(CommandEnum.ENTER_ID.getMessage());
+            bot.print(CommandEnum.ENTER_ID);
             Long id = Long.parseLong(bot.read());
-            bot.print(CommandEnum.ENTER_NEW_NAME.getMessage());
+            bot.print(CommandEnum.ENTER_NEW_NAME);
             String name = bot.read();
-            bot.print(CommandEnum.ENTER_NEW_TEXT.getMessage());
+            bot.print(CommandEnum.ENTER_NEW_TEXT);
             String text = bot.read();
             Message message = new Message(name, text);
             messageService.updateMessage(id, message);
-            bot.print("Done");
+            bot.print(CommandEnum.DONE);
         } catch (NotFoundException e) {
-            bot.print("Can't update the message (can't find such a message)");
+            bot.print(CommandEnum.CAN_NOT_UPDATE);
         }
     }
 
     @Override
     public void deleteMessage() {
         try {
-            bot.print(CommandEnum.ENTER_ID.getMessage());
+            bot.print(CommandEnum.ENTER_ID);
             Long id = Long.parseLong(bot.read());
             messageService.deleteMessage(id);
-            bot.print("Done");
+            bot.print(CommandEnum.DONE);
         } catch (NotFoundException e) {
-            bot.print("Can't delete the message (can't find such a message)");
+            bot.print(CommandEnum.CAN_NOT_DELETE);
         }
     }
 
     @Override
     public void defaultMethod() {
-       bot.print("The command is entered incorrectly. Enter command from the list");
+        bot.print(CommandEnum.WRONG_COMMAND);
+    }
+
+    @Override
+    public void changeLanguage() {
+        bot.print(CommandEnum.SELECT_LANGUAGE);
+        String language = bot.read();
+        int intLanguage = Integer.parseInt(language);
+        //по умолчанию английский
+        Locale locale = new Locale("en");
+        switch (intLanguage) {
+            case 1 -> locale = new Locale("en");
+            case 2 -> locale = new Locale("ru");
+            default -> {
+                bot.print(CommandEnum.WRONG_LANGUAGE);
+                changeLanguage();
+            }
+        }
+        bot.setLocale(locale);
     }
 }

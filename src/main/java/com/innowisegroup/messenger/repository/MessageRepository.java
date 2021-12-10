@@ -6,11 +6,11 @@ import com.innowisegroup.messenger.model.Message;
 import java.util.List;
 
 public interface MessageRepository {
-    List<Message> getAll() ;
+    List<Message> getAll();
 
-    void addMessage(Message message) ;
+    void addMessage(Message message);
 
-    void addAllMessages(List<Message> messages) ;
+    void addAllMessages(List<Message> messages);
 
     Message getById(Long id) throws NotFoundException;
 

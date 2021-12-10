@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.springframework:spring-context:$springContextVersion"
+    implementation "net.sf.supercsv:super-csv:$superCsvVersion"
+    implementation "javax.annotation:javax.annotation-api:$javaxAnnotationfpiVersion"
+    implementation "org.synyx:messagesource:$messagesourceVersion"
+
+}
+
+application {
+    mainClass = 'com.innowisegroup.messenger.Main'
+}
+
+run {
+    standardInput = System.in
+}
