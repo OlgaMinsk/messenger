@@ -30,6 +30,7 @@ public class Main {
         bot.print(CommandEnum.CREATE_NEW_MESSAGE);
         bot.print(CommandEnum.UPDATE_MESSAGE);
         bot.print(CommandEnum.DELETE_MESSAGE);
+        bot.print(CommandEnum.GET_BY_ID);
         bot.print(CommandEnum.CHANGE_LANGUAGE);
         bot.print(CommandEnum.CLOSE);
         String commandFromUser = bot.read();

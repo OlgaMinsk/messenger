@@ -21,6 +21,7 @@ public class MainController {
             case CREATE_NEW_MESSAGE -> service.createNewMessage();
             case UPDATE_MESSAGE -> service.updateMessage();
             case DELETE_MESSAGE -> service.deleteMessage();
+            case GET_BY_ID -> service.getById();
             case SELECT_LANGUAGE -> service.changeLanguage();
             case CLOSE -> isWorking = false;
             default -> service.defaultMethod();
@@ -33,8 +34,9 @@ public class MainController {
             case 2 -> service.createNewMessage();
             case 3 -> service.updateMessage();
             case 4 -> service.deleteMessage();
-            case 5 -> service.changeLanguage();
-            case 6 -> isWorking = false;
+            case 5-> service.getById();
+            case 6 -> service.changeLanguage();
+            case 7 -> isWorking = false;
             default -> service.defaultMethod();
         }
     }

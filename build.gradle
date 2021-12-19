@@ -12,6 +12,10 @@ dependencies {
     implementation "net.sf.supercsv:super-csv:$superCsvVersion"
     implementation "javax.annotation:javax.annotation-api:$javaxAnnotationfpiVersion"
     implementation "org.synyx:messagesource:$messagesourceVersion"
+    implementation "org.springframework:spring-aspects:$springAspectsVersion"
+    implementation "org.springframework:spring-aop:$springAopVersion"
+
+
 
 }
 

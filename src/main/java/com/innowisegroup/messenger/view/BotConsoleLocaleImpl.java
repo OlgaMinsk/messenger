@@ -28,10 +28,10 @@ public class BotConsoleLocaleImpl implements Bot {
         System.out.println(bundle.getString(commandEnum.getMessageForLocale()));
     }
 
-    //   @Override
-    public void print(String stringToPrint) {
-        System.out.println(stringToPrint);
-    }
+
+//    public void print(String stringToPrint) {
+//        System.out.println(stringToPrint);
+//    }
 
     @Override
     public void print(List<Message> messageList) {

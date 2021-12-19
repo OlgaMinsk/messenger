@@ -26,7 +26,7 @@ import java.util.Set;
 
 @Repository
 public class MessageRepositoryCsvImpl implements MessageRepository {
-    private final static String FILE_NAME = "/home/user/IdeaProjects/messenger/src/main/resources/messages.csv";
+    private final static String FILE_NAME = "./src/main/resources/messages.csv";
 
     Bot bot;
 
@@ -42,11 +42,12 @@ public class MessageRepositoryCsvImpl implements MessageRepository {
     }
 
     @Override
-    public void addMessage(Message message) {
+    public Message addMessage(Message message) {
         message.setId(getNextId());
         List<Message> messageList = getAll();
         messageList.add(message);
         saveAllMessages(messageList);
+        return message;
     }
 
     @Override
@@ -69,13 +70,16 @@ public class MessageRepositoryCsvImpl implements MessageRepository {
     }
 
     @Override
-    public void deleteMessage(Long id) throws NotFoundException {
+    public boolean deleteMessage(Long id) throws NotFoundException {
         if (existById(id)) {
             Map<Long, Message> messageMap = getAllMessages();
             messageMap.remove(id);
             saveAllMessages(toList(messageMap));
+            return true;
         } else {
             throw new NotFoundException(bot.returnDescriptionOfException(CommandEnum.CAN_NOT_FIND_MESSAGE_BY_ID) + id);
+            //or return false; you should check the flag - if return is true - ok (message has been deleted).
+            //if the flag is false - the message has not been deleted.
         }
     }
 

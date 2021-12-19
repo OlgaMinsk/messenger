@@ -88,4 +88,17 @@ public class MainServiceCSVImpl implements MainService {
         }
         bot.setLocale(locale);
     }
+
+    @Override
+    public void getById() {
+        bot.print(CommandEnum.ENTER_ID);
+        String idString = bot.read();
+        Long id = Long.parseLong(idString);
+        try {
+            Message message = messageService.getById(id);
+            bot.print(message);
+        } catch (NotFoundException e) {
+            bot.print(CommandEnum.CAN_NOT_FIND_MESSAGE_BY_ID);
+        }
+    }
 }

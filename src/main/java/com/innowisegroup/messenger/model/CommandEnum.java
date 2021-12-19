@@ -20,7 +20,8 @@ public enum CommandEnum {
     DONE("done"),
     CAN_NOT_UPDATE("canNotUpdate"),
     CAN_NOT_DELETE("canNotDelete"),
-    WRONG_LANGUAGE("wrongLanguage");
+    WRONG_LANGUAGE("wrongLanguage"),
+    GET_BY_ID("getById");
 
     private String messageForLocale;
 

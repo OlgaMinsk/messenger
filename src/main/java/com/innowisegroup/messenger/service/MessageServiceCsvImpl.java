@@ -41,4 +41,9 @@ public class MessageServiceCsvImpl implements MessageService {
     public void saveAllMessages(List<Message> messageList) {
         messageRepository.addAllMessages(messageList);
     }
+
+    @Override
+    public Message getById(Long id) throws NotFoundException {
+        return messageRepository.getById(id);
+    }
 }

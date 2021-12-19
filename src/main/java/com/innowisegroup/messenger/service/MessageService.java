@@ -17,4 +17,6 @@ public interface MessageService {
 
     void saveAllMessages(List<Message> messageList);
 
+    Message getById(Long id) throws NotFoundException;
+
 }
