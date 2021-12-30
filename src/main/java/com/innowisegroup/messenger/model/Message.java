@@ -1,24 +1,37 @@
 package com.innowisegroup.messenger.model;
 
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Entity
+@Table(name = "messenger.messages")
 public class Message {
+    @Id
+    @Column(name = "message_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String text;
+    @Column
+    private String message;
+
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
 
     public Message() {
     }
 
-    public Message(Long id, String name, String text) {
-        this.id = id;
-        this.name = name;
-        this.text = text;
-    }
-
-    public Message(String name, String text) {
-        this.name = name;
-        this.text = text;
+    public Message(User user, String text) {
+        this.user = user;
+        this.message = text;
     }
 
     public Long getId() {
@@ -29,22 +42,21 @@ public class Message {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public User getUser() {
+        return user;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getText() {
-        return text;
+    public String getMessage() {
+        return message;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setMessage(String text) {
+        this.message = text;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -56,14 +68,5 @@ public class Message {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", text='" + text + '\'' +
-                '}';
     }
 }

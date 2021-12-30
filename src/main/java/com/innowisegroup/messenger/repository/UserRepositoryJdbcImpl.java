@@ -1,14 +1,12 @@
 package com.innowisegroup.messenger.repository;
 
 import com.innowisegroup.messenger.exception.NotFoundException;
-import com.innowisegroup.messenger.model.Message;
 import com.innowisegroup.messenger.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.List;
 
@@ -31,7 +29,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
 
     @Override
     public User addUser(User user) {
-        jdbcTemplate.update("insert into users(user_name) values (?);", user.getUser_name());
+        jdbcTemplate.update("insert into users(user_name) values (?);", user.getUserName());
         return null;
     }
 

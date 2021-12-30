@@ -1,29 +1,61 @@
 package com.innowisegroup.messenger.model;
 
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name = "users")
 public class User {
-    private Long user_id;
-    private String user_name;
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public User(String user_name) {
-        this.user_name = user_name;
+    @Column(name = "user_name")
+    private String userName;
+
+    public List<Message> getMessageList() {
+        return messageList;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public void setMessageList(List<Message> messageList) {
+        this.messageList = messageList;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Message> messageList;
+
+    public User() {
     }
 
-    public String getUser_name() {
-        return user_name;
+    public User(String userName) {
+        this.userName = userName;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
@@ -31,11 +63,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(user_id, user.user_id) && Objects.equals(user_name, user.user_name);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user_id, user_name);
+        return Objects.hash(id);
     }
 }

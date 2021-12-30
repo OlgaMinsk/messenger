@@ -14,11 +14,9 @@ dependencies {
     implementation "org.synyx:messagesource:$messagesourceVersion"
     implementation "org.springframework:spring-aspects:$springAspectsVersion"
     implementation "org.springframework:spring-aop:$springAopVersion"
-    implementation "org.springframework:spring-jdbc:$springJdbcVersion"
+    //   implementation "org.springframework:spring-jdbc:$springJdbcVersion"
     implementation "org.postgresql:postgresql:$postgresqVersion"
-
-
-
+    implementation "org.hibernate:hibernate-core:$hibernateCoreVersion"
 }
 
 application {

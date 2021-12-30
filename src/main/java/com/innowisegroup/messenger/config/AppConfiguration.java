@@ -24,7 +24,6 @@ public class AppConfiguration {
     @Value("${jdbc.password}")
     private String password;
 
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -32,10 +31,6 @@ public class AppConfiguration {
         dataSource.setUrl(url);
         dataSource.setUsername(userName);
         dataSource.setPassword(password);
-//        dataSource.setDriverClassName("org.postgresql.Driver");
-//        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
-//        dataSource.setUsername("postgres");
-//        dataSource.setPassword("123ewq");
         return dataSource;
     }
 
