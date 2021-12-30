@@ -37,6 +37,7 @@ public class MainController {
             case 5-> service.getById();
             case 6 -> service.changeLanguage();
             case 7 -> isWorking = false;
+            case 8 -> service.createUser();
             default -> service.defaultMethod();
         }
     }

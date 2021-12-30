@@ -21,7 +21,9 @@ public enum CommandEnum {
     CAN_NOT_UPDATE("canNotUpdate"),
     CAN_NOT_DELETE("canNotDelete"),
     WRONG_LANGUAGE("wrongLanguage"),
-    GET_BY_ID("getById");
+    GET_BY_ID("getById"),
+    CREATE_USER("createUser");
+
 
     private String messageForLocale;
 

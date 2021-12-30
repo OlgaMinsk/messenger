@@ -12,5 +12,8 @@ public interface MainService {
     void defaultMethod();
 
     void changeLanguage();
+
+    void createUser();
+
     void getById();
 }

@@ -22,7 +22,9 @@ public class Main {
         while (controller.isWorking()) {
             start();
         }
+
     }
+
 
     public static void start() {
         bot.print(CommandEnum.ENTER_NEW_COMMAND);
@@ -33,6 +35,7 @@ public class Main {
         bot.print(CommandEnum.GET_BY_ID);
         bot.print(CommandEnum.CHANGE_LANGUAGE);
         bot.print(CommandEnum.CLOSE);
+        bot.print(CommandEnum.CREATE_USER);
         String commandFromUser = bot.read();
         try {
             controller.controllerNum((Integer) Integer.parseInt(commandFromUser));

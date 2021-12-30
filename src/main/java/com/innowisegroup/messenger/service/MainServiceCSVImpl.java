@@ -3,6 +3,8 @@ package com.innowisegroup.messenger.service;
 import com.innowisegroup.messenger.exception.NotFoundException;
 import com.innowisegroup.messenger.model.CommandEnum;
 import com.innowisegroup.messenger.model.Message;
+import com.innowisegroup.messenger.model.User;
+import com.innowisegroup.messenger.repository.UserRepository;
 import com.innowisegroup.messenger.view.Bot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,15 @@ public class MainServiceCSVImpl implements MainService {
 
     private final MessageService messageService;
     private final Bot bot;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MainServiceCSVImpl(MessageService messageService, Bot bot) {
+    public MainServiceCSVImpl(MessageService messageService,
+                              Bot bot,
+                              UserRepository userRepository) {
         this.messageService = messageService;
         this.bot = bot;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -87,6 +93,15 @@ public class MainServiceCSVImpl implements MainService {
             }
         }
         bot.setLocale(locale);
+    }
+
+    @Override
+    public void createUser() {
+        bot.print(CommandEnum.ENTER_NAME);
+        String  name = bot.read();
+        User user = new User(name);
+        userRepository.addUser(user);
+
     }
 
     @Override

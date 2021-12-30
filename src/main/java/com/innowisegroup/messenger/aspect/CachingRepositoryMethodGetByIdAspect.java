@@ -34,14 +34,14 @@ public class CachingRepositoryMethodGetByIdAspect {
     public Object cachingRepositoryMethodGetByIdExecution4(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         Long id = (Long) args[0];
-        if (cacheGetMessageById.get(id) == null) {
-            Message message = (Message) joinPoint.proceed();
-            cacheGetMessageById.put(id, message);
-            System.out.println("сходили в файл");
-            return message;
+        if (cacheGetMessageById.get(id) != null) {
+            System.out.println("нашли в кеше");
+            return cacheGetMessageById.get(id);
         }
-        System.out.println("нашли в кеше");
-        return cacheGetMessageById.get(id);
+        Message message = (Message) joinPoint.proceed();
+        cacheGetMessageById.put(id, message);
+        System.out.println("сходили в файл");
+        return message;
     }
 }
 
