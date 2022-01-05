@@ -1,37 +1,33 @@
 package com.innowisegroup.messenger.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.innowisegroup.messenger.model.Message;
+import com.innowisegroup.messenger.model.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import javax.sql.DataSource;
 
 
 @Configuration
 @ComponentScan("com.innowisegroup.messenger")
-@PropertySource("classpath:postgresql.properties")
+//@PropertySource("classpath:postgresql.properties")
+//@EnableTransactionManagement
 public class AppConfiguration {
-
-    @Value("${jdbc.className}")
-    private String className;
-    @Value("${jdbc.urlForDB}")
-    private String url;
-    @Value("${jdbc.user}")
-    private String userName;
-    @Value("${jdbc.password}")
-    private String password;
-
     @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(className);
-        dataSource.setUrl(url);
-        dataSource.setUsername(userName);
-        dataSource.setPassword(password);
-        return dataSource;
+    public SessionFactory getSessionFactory() {
+        SessionFactory sessionFactory = null;
+        try {
+            org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration().configure();
+            configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(Message.class);
+            StandardServiceRegistryBuilder builder =
+                    new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+            sessionFactory = configuration.buildSessionFactory(builder.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sessionFactory;
     }
 
 }

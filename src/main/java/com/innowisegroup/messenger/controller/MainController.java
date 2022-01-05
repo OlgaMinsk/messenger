@@ -7,8 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component("controller")
 public class MainController {
+
     private final MainService service;
-    boolean isWorking = true;
+    private boolean isWorking = true;
 
     @Autowired
     public MainController(MainService service) {
@@ -17,28 +18,75 @@ public class MainController {
 
     public void controller(CommandEnum commandEnum) {
         switch (commandEnum) {
-            case DISPLAY_ALL_MESSAGES -> service.displayAllMessages();
-            case CREATE_NEW_MESSAGE -> service.createNewMessage();
-            case UPDATE_MESSAGE -> service.updateMessage();
-            case DELETE_MESSAGE -> service.deleteMessage();
-            case GET_BY_ID -> service.getById();
-            case SELECT_LANGUAGE -> service.changeLanguage();
-            case CLOSE -> isWorking = false;
-            default -> service.defaultMethod();
+            case CREATE_NEW_MESSAGE:
+                service.createNewMessage();
+                break;
+            case UPDATE_MESSAGE:
+                service.updateMessage();
+                break;
+            case DELETE_MESSAGE:
+                service.deleteMessage();
+                break;
+            case DISPLAY_ALL_USERS:
+                service.getAllUsers();
+                break;
+            case GET_USER_BY_ID:
+                service.getUserById();
+                break;
+            case CREATE_USER:
+                service.createUser();
+                break;
+            case UPDATE_USER:
+                service.updateUser();
+                break;
+            case DELETE_USER:
+                service.deleteUser();
+                break;
+            case SELECT_LANGUAGE:
+                service.changeLanguage();
+                break;
+            case CLOSE:
+                isWorking = false;
+                break;
+            default:
+                service.defaultMethod();
         }
     }
 
     public void controllerNum(Integer commandNum) {
         switch (commandNum) {
-            case 1 -> service.displayAllMessages();
-            case 2 -> service.createNewMessage();
-            case 3 -> service.updateMessage();
-            case 4 -> service.deleteMessage();
-            case 5-> service.getById();
-            case 6 -> service.changeLanguage();
-            case 7 -> isWorking = false;
-            case 8 -> service.createUser();
-            default -> service.defaultMethod();
+            case 3:
+                service.createNewMessage();
+                break;
+            case 4:
+                service.updateMessage();
+                break;
+            case 5:
+                service.deleteMessage();
+                break;
+            case 6:
+                service.getAllUsers();
+                break;
+            case 7:
+                service.getUserById();
+                break;
+            case 8:
+                service.createUser();
+                break;
+            case 9:
+                service.updateUser();
+                break;
+            case 10:
+                service.deleteUser();
+                break;
+            case 11:
+                service.changeLanguage();
+                break;
+            case 12:
+                isWorking = false;
+                break;
+            default:
+                service.defaultMethod();
         }
     }
 

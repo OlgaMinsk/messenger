@@ -2,6 +2,7 @@ package com.innowisegroup.messenger.view;
 
 import com.innowisegroup.messenger.model.CommandEnum;
 import com.innowisegroup.messenger.model.Message;
+import com.innowisegroup.messenger.model.User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
@@ -28,21 +29,21 @@ public class BotConsoleLocaleImpl implements Bot {
         System.out.println(bundle.getString(commandEnum.getMessageForLocale()));
     }
 
-
-//    public void print(String stringToPrint) {
-//        System.out.println(stringToPrint);
-//    }
-
     @Override
-    public void print(List<Message> messageList) {
-        for (Message message : messageList) {
-            System.out.println(message.toString());
+    public void print(List list) {
+        for (Object o : list) {
+            System.out.println(o.toString());
         }
     }
 
     @Override
     public void print(Message message) {
         System.out.println(message.toString());
+    }
+
+    @Override
+    public void print(User user) {
+        System.out.println(user.toString());
     }
 
     @Override

@@ -20,7 +20,6 @@ import java.util.Map;
 public class RepositoryLoggingAspect {
     private static Logger logger;
 
-
     @Autowired
     public RepositoryLoggingAspect(Logger logger) {
         this.logger = logger;

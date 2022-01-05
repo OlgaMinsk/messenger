@@ -1,23 +1,13 @@
 package com.innowisegroup.messenger.repository;
 
 import com.innowisegroup.messenger.exception.NotFoundException;
-import com.innowisegroup.messenger.model.Message;
-
-import java.util.List;
 
 public interface MessageRepository {
-    List<Message> getAll();
 
-    Message addMessage(Message message);
+    boolean addMessageForUser(Long userId, String messageText) throws NotFoundException;
 
-    void addAllMessages(List<Message> messages);
+    boolean updateMessageFromUser(Long messageId, String messageText) throws NotFoundException;
 
-    Message getById(Long id) throws NotFoundException;
-
-    boolean deleteMessage(Long id) throws NotFoundException;
-
-    void updateMessage(Long id, Message message) throws NotFoundException;
-
-    boolean existById(Long id);
+    boolean deleteMessageFromUser(Long messageId) throws NotFoundException;
 
 }
