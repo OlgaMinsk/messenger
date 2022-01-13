@@ -18,6 +18,7 @@ public interface Bot {
 
     void print(User user);
 
+
     String returnDescriptionOfException(CommandEnum commandEnum);
 
     String read();

@@ -18,6 +18,9 @@ public class MainController {
 
     public void controller(CommandEnum commandEnum) {
         switch (commandEnum) {
+            case SHOW_ALL_NAMES:
+                service.showAllNames();
+                break;
             case CREATE_NEW_MESSAGE:
                 service.createNewMessage();
                 break;
@@ -55,6 +58,9 @@ public class MainController {
 
     public void controllerNum(Integer commandNum) {
         switch (commandNum) {
+            case 1:
+                service.showAllNames();
+                break;
             case 3:
                 service.createNewMessage();
                 break;

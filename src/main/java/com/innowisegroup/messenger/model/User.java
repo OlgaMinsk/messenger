@@ -1,5 +1,10 @@
 package com.innowisegroup.messenger.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "users", schema = "messenger")
 public class User implements Serializable {
     @Id
@@ -21,10 +28,12 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(name = "name")
     private String userName;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<Message> messageList;
 
     public User() {
@@ -56,19 +65,6 @@ public class User implements Serializable {
 
     public void setMessageList(List<Message> messageList) {
         this.messageList = messageList;
-    }
-
-    public boolean addMessage(Message message) {
-        this.messageList.add(message);
-        return true;
-    }
-
-    public boolean deleteMessage(Message message) {
-        if (!this.messageList.contains(message)) {
-            return false;
-        }
-        messageList.remove(message);
-        return true;
     }
 
     @Override

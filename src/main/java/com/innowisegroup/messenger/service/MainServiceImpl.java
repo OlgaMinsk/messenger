@@ -21,7 +21,7 @@ public class MainServiceImpl implements MainService {
     @Autowired
     public MainServiceImpl(Bot bot,
                            UserRepository userRepository,
-                           MessageRepository messageRepository    ) {
+                           MessageRepository messageRepository) {
         this.bot = bot;
         this.userRepository = userRepository;
         this.messageRepository = messageRepository;
@@ -66,7 +66,7 @@ public class MainServiceImpl implements MainService {
             bot.print(CommandEnum.DONE);
         } catch (NotFoundException e) {
             e.printStackTrace();
-            bot.print(CommandEnum.CAN_NOT_UPDATE);
+            bot.print(CommandEnum.CAN_NOT_DELETE);
         }
     }
 
@@ -162,5 +162,10 @@ public class MainServiceImpl implements MainService {
     @Override
     public void defaultMethod() {
         bot.print(CommandEnum.WRONG_COMMAND);
+    }
+
+    @Override
+    public void showAllNames() {
+        bot.print(userRepository.getAllNames());
     }
 }

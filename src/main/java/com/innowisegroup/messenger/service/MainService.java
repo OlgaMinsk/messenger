@@ -21,4 +21,6 @@ public interface MainService {
 
     void defaultMethod();
 
+    void showAllNames();
+
 }

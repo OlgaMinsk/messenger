@@ -14,14 +14,15 @@ import java.util.Scanner;
 @Component("bot")
 public class BotConsoleLocaleImpl implements Bot {
 
+    private static final String BUNDLE_NAME="command";
     private static Scanner scan;
     private static Locale locale = new Locale("en");
-    private static ResourceBundle bundle = ResourceBundle.getBundle("command");
+    private static ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
     @Override
     public void setLocale(Locale locale) {
         this.locale = locale;
-        bundle = ResourceBundle.getBundle("command", locale);
+        bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
     }
 
     @Override

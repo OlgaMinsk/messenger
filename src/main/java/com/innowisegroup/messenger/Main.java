@@ -26,6 +26,7 @@ public class Main {
 
     public static void start() {
         bot.print(CommandEnum.ENTER_NEW_COMMAND);
+        bot.print(CommandEnum.SHOW_ALL_NAMES);
 //        bot.print(CommandEnum.DISPLAY_ALL_MESSAGES);
 //        bot.print(CommandEnum.GET_MESSAGE_BY_ID);
         bot.print(CommandEnum.CREATE_NEW_MESSAGE);
@@ -40,7 +41,7 @@ public class Main {
         bot.print(CommandEnum.CLOSE);
         String commandFromUser = bot.read();
         try {
-            controller.controllerNum((Integer) Integer.parseInt(commandFromUser));
+            controller.controllerNum(Integer.parseInt(commandFromUser));
         } catch (NumberFormatException e) {
             bot.print(CommandEnum.WRONG_COMMAND);
         }

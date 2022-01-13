@@ -1,8 +1,17 @@
 package com.innowisegroup.messenger.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.engine.internal.JoinSequence;
+import org.hibernate.loader.plan.spi.Join;
+import org.hibernate.sql.JoinType;
+
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +22,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "messages", schema = "messenger")
 public class Message implements Serializable {
     @Id

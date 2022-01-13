@@ -6,7 +6,10 @@ import com.innowisegroup.messenger.model.User;
 import java.util.List;
 
 public interface UserRepository {
+
     List<User> getAllUsers();
+
+    List<String> getAllNames();
 
     User getUserById(Long id) throws NotFoundException;
 

@@ -1,6 +1,7 @@
 package com.innowisegroup.messenger.repository;
 
 import com.innowisegroup.messenger.exception.NotFoundException;
+import com.innowisegroup.messenger.model.CommandEnum;
 import com.innowisegroup.messenger.model.Message;
 import com.innowisegroup.messenger.model.User;
 import org.hibernate.Session;
@@ -10,15 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MessageRepositoryHibernateImpl implements MessageRepository{
+public class MessageRepositoryHibernateImpl implements MessageRepository {
+    private static final String CAN_NOT_FIND_MESSAGE_BY_ID ="Can't find the message with id ";
     private final SessionFactory sessionFactory;
     private final UserRepository userRepository;
 
     @Autowired
-    public MessageRepositoryHibernateImpl (SessionFactory sessionFactory,
-                                           UserRepository userRepository) {
+    public MessageRepositoryHibernateImpl(SessionFactory sessionFactory,
+                                          UserRepository userRepository) {
         this.sessionFactory = sessionFactory;
-        this.userRepository=userRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -41,7 +43,7 @@ public class MessageRepositoryHibernateImpl implements MessageRepository{
         Message message = session.get(Message.class, messageId);
         session.close();
         if (message == null) {
-            throw new NotFoundException("Can't find the message with id " + messageId);
+            throw new NotFoundException(CAN_NOT_FIND_MESSAGE_BY_ID + messageId);
         }
         session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
@@ -58,14 +60,15 @@ public class MessageRepositoryHibernateImpl implements MessageRepository{
         Message message = session.get(Message.class, messageId);
         if (message == null) {
             session.close();
-            throw new NotFoundException("Can't find the message with id " + messageId);
+            throw new NotFoundException(CAN_NOT_FIND_MESSAGE_BY_ID + messageId);
         }
         Transaction transaction = session.beginTransaction();
         User user = message.getUser();
-        user.deleteMessage(message);
+        user.getMessageList().remove(message);
         session.delete(message);
         transaction.commit();
         session.close();
         return true;
     }
+
 }
