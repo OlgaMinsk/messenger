@@ -1,17 +1,11 @@
 package com.innowisegroup.messenger.model;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.engine.internal.JoinSequence;
-import org.hibernate.loader.plan.spi.Join;
-import org.hibernate.sql.JoinType;
 
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,7 +29,11 @@ public class Message implements Serializable {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User sender;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User reciever;
 
     public Message() {
     }
@@ -60,12 +58,20 @@ public class Message implements Serializable {
         this.message = message;
     }
 
-    public User getUser() {
-        return user;
+    public User getSender() {
+        return sender;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReciever() {
+        return reciever;
+    }
+
+    public void setReciever(User reciever) {
+        this.reciever = reciever;
     }
 
     @Override
@@ -73,12 +79,12 @@ public class Message implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message1 = (Message) o;
-        return Objects.equals(id, message1.id) && Objects.equals(message, message1.message) && Objects.equals(user, message1.user);
+        return id.equals(message1.id) && message.equals(message1.message) && sender.equals(message1.sender) && reciever.equals(message1.reciever);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, message, user);
+        return Objects.hash(id, message, sender, reciever);
     }
 
     @Override
@@ -86,6 +92,8 @@ public class Message implements Serializable {
         return "Message{" +
                 "id=" + id +
                 ", message='" + message + '\'' +
+                ", sender=" + sender +
+                ", reciever=" + reciever +
                 '}';
     }
 }

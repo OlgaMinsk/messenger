@@ -1,24 +1,10 @@
 package com.innowisegroup.messenger.repository;
 
-import com.innowisegroup.messenger.exception.NotFoundException;
 import com.innowisegroup.messenger.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface UserRepository {
-
-    List<User> getAllUsers();
-
-    List<String> getAllNames();
-
-    User getUserById(Long id) throws NotFoundException;
-
-    User addUser(User user);
-
-    User updateUser(Long id, User user) throws NotFoundException;
-
-    boolean deleteUser(Long id) throws NotFoundException;
-
-    boolean existUserById(Long id);
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
 }
