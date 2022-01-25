@@ -3,6 +3,7 @@ package com.innowisegroup.messenger.service;
 import com.innowisegroup.messenger.dto.request.UserCreateRequest;
 import com.innowisegroup.messenger.dto.request.UserUpdateRequest;
 import com.innowisegroup.messenger.dto.response.UserResponse;
+import com.innowisegroup.messenger.exception.DuplicateUniqueValueException;
 import com.innowisegroup.messenger.exception.NotFoundException;
 import com.innowisegroup.messenger.mapper.UserMapper;
 import com.innowisegroup.messenger.model.User;
@@ -19,7 +20,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -35,7 +35,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse createNewUser(UserCreateRequest userCreateRequest) {
+    public UserResponse createNewUser(UserCreateRequest userCreateRequest) throws DuplicateUniqueValueException {
+        if (userRepository.existsByUserName(userCreateRequest.getUserName())) {
+            throw new DuplicateUniqueValueException("User with name " + userCreateRequest.getUserName() + " already exists");
+        }
         return Optional.of(userCreateRequest)
                 .map(userMapper::toUser)
                 .map(userRepository::save)
@@ -45,32 +48,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserById(Long userId) throws NotFoundException {
-        if (!userRepository.existsById(userId)) {
-            throw new NotFoundException("");
-        }
+        checkingUserExistence(userId);
         return userMapper.toUserResponse(userRepository.getById(userId));
     }
 
-//    public UserResponse getUserById(Long userId) {
-//        return jopa.findById(userId)
-//                .map(userMapper::toUserResponse)
-//                .orElseThrow(() ->
-//                        {
-//                            return new ResponseStatusException(HttpStatus.NOT_FOUND, "getUserById(), User can not found");
-//                        }
-//                );
-//    }
-
     @Override
-    public UserResponse updateUser(Long userId, UserUpdateRequest userUpdateRequest) {
-        User user = userMapper.updateUser(userUpdateRequest, userRepository.getById(userId));
+    public UserResponse updateUser(Long userId, UserUpdateRequest userUpdateRequest)
+            throws NotFoundException, DuplicateUniqueValueException {
+        checkingUserExistence(userId);
+        if (userRepository.existsByUserName(userUpdateRequest.getUserName())) {
+            throw new DuplicateUniqueValueException("Can't update name: user with name " + userUpdateRequest.getUserName() + " already exists.");
+        }
+        User user = userRepository.getById(userId);
+        userMapper.updateUser(userUpdateRequest, user);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long userId) throws NotFoundException {
+        checkingUserExistence(userId);
         userRepository.deleteById(userId);
+    }
+
+    private void checkingUserExistence(Long userId) throws NotFoundException {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException("User with id " + userId + " does not exist");
+        }
     }
 
 }

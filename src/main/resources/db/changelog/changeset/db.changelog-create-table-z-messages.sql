@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset Volha:2
+--changeset Volha:3
 /* create table messages */
 
 CREATE TABLE IF NOT EXISTS MESSENGER.messages

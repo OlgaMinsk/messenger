@@ -22,8 +22,9 @@ import java.util.Objects;
 public class Message implements Serializable {
     @Id
     @Column(name = "message_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
     private String message;
 
@@ -32,7 +33,7 @@ public class Message implements Serializable {
     private User sender;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "receiver", nullable = false)
     private User receiver;
 
     public Message() {

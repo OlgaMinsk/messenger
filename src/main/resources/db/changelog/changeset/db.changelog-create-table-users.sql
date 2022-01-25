@@ -1,5 +1,5 @@
 --liquibase formatted sql
---changeset Volha:3
+--changeset Volha:2
 /* create table users */
 
  CREATE TABLE IF NOT EXISTS MESSENGER.users

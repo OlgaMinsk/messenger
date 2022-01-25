@@ -31,7 +31,7 @@ select user_name as name, message from MESSENGER.users, MESSENGER.messages where
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
     <include file="db/changelog/changeset/db.changelog-create-table-users.sql"/>
-    <include file="db/changelog/changeset/db.changelog-create-table-messages.sql"/>
+    <include file="db/changelog/changeset/db.changelog-create-table-z-messages.sql"/>
 
 </databaseChangeLog >
 
