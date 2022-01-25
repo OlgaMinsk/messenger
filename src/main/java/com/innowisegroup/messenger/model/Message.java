@@ -28,12 +28,12 @@ public class Message implements Serializable {
     private String message;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "sender", nullable = false)
     private User sender;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
-    private User reciever;
+    private User receiver;
 
     public Message() {
     }
@@ -66,12 +66,12 @@ public class Message implements Serializable {
         this.sender = sender;
     }
 
-    public User getReciever() {
-        return reciever;
+    public User getReceiver() {
+        return receiver;
     }
 
-    public void setReciever(User reciever) {
-        this.reciever = reciever;
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
     }
 
     @Override
@@ -79,12 +79,12 @@ public class Message implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message1 = (Message) o;
-        return id.equals(message1.id) && message.equals(message1.message) && sender.equals(message1.sender) && reciever.equals(message1.reciever);
+        return id.equals(message1.id) && message.equals(message1.message) && sender.equals(message1.sender) && receiver.equals(message1.receiver);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, message, sender, reciever);
+        return Objects.hash(id, message, sender, receiver);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class Message implements Serializable {
                 "id=" + id +
                 ", message='" + message + '\'' +
                 ", sender=" + sender +
-                ", reciever=" + reciever +
+                ", receiver=" + receiver +
                 '}';
     }
 }

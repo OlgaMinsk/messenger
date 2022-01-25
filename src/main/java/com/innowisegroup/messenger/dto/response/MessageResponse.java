@@ -3,10 +3,10 @@ package com.innowisegroup.messenger.dto.response;
 import java.util.Objects;
 
 public class MessageResponse {
-    Long messageId;
-    Long receiverId;
-    Long senderId;
-    String message;
+    private Long messageId;
+    private Long receiverId;
+    private Long senderId;
+    private String message;
 
     public MessageResponse() {
     }

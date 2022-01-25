@@ -3,8 +3,8 @@ package com.innowisegroup.messenger.dto.request;
 import java.util.Objects;
 
 public class MessageCreateRequest {
-    Long receiverId;
-    String message;
+    private Long receiverId;
+    private String message;
 
     public MessageCreateRequest() {
     }

@@ -3,7 +3,7 @@ package com.innowisegroup.messenger.dto.request;
 import java.util.Objects;
 
 public class MessageUpdateRequest {
-    String message;
+    private String message;
 
     public MessageUpdateRequest() {
     }

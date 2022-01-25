@@ -3,21 +3,21 @@ package com.innowisegroup.messenger.dto.request;
 import java.util.Objects;
 
 public class UserCreateRequest {
-    String name;
+    private String userName;
 
     public UserCreateRequest() {
     }
 
-    public UserCreateRequest(String name) {
-        this.name = name;
+    public UserCreateRequest(String userName) {
+        this.userName = userName;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
@@ -25,18 +25,18 @@ public class UserCreateRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserCreateRequest that = (UserCreateRequest) o;
-        return Objects.equals(name, that.name);
+        return Objects.equals(userName, that.userName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(userName);
     }
 
     @Override
     public String toString() {
         return "UserCreateRequest{" +
-                "name='" + name + '\'' +
+                "name='" + userName + '\'' +
                 '}';
     }
 }

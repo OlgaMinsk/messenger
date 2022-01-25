@@ -1,21 +1,15 @@
 package com.innowisegroup.messenger.model;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -30,11 +24,6 @@ public class User implements Serializable {
 
     @Column(name = "name")
     private String userName;
-
-    @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<Message> messageList;
 
     public User() {
     }
@@ -59,14 +48,6 @@ public class User implements Serializable {
         this.userName = userName;
     }
 
-    public List<Message> getMessageList() {
-        return messageList;
-    }
-
-    public void setMessageList(List<Message> messageList) {
-        this.messageList = messageList;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,11 +65,8 @@ public class User implements Serializable {
     public String toString() {
         String toString = "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'';
-        if (!messageList.isEmpty()) {
-            toString = toString + ", messageList=" + messageList;
-        }
-        toString = toString + '}';
+                ", userName='" + userName + '\''
+        + '}';
         return toString;
     }
 }

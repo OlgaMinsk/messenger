@@ -4,11 +4,14 @@
 
 CREATE TABLE IF NOT EXISTS MESSENGER.messages
 (
-    message_id serial
+    message_id bigserial
         primary key,
-    user_id    serial,
-    FOREIGN KEY (user_id)
-        REFERENCES users (user_id),
-    message    varchar not null
+    message    varchar not null,
+    sender    bigint,
+    receiver   bigint,
+    FOREIGN KEY (sender)
+        REFERENCES MESSENGER.users (user_id),
+    FOREIGN KEY (receiver)
+        REFERENCES MESSENGER.users (user_id)
 )
 --rollback DROP TABLE MESSENGER.messages;
