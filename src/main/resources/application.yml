@@ -1,0 +1,49 @@
+spring:
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changeLog-master.yaml
+  jpa:
+    open-in-view: true
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+  application:
+    name: messenger
+
+  datasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 123ewq
+  sql:
+    init:
+      platform: postgres
+
+
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+      enabled: true
+
+  data:
+    mongodb:
+      database: messenger
+      port: 27017
+      host: localhost
+      auto-index-creation: true
+
+
+
+server:
+  port: 8080
+
+  error:
+      include-message: ALWAYS
+

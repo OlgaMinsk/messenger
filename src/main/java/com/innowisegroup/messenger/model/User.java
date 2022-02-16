@@ -1,40 +1,25 @@
 package com.innowisegroup.messenger.model;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+//@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "users", schema = "messenger")
+//@Table(name = "users")
 public class User implements Serializable {
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "user_name")
     private String userName;
 
-    @OneToMany(mappedBy = "sender", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<Message> messageList;
+    @Column(name = "avatar_id")
+    private String avatarId;
 
     public User() {
     }
@@ -59,12 +44,12 @@ public class User implements Serializable {
         this.userName = userName;
     }
 
-    public List<Message> getMessageList() {
-        return messageList;
+    public String getAvatarId() {
+        return avatarId;
     }
 
-    public void setMessageList(List<Message> messageList) {
-        this.messageList = messageList;
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
     }
 
     @Override
@@ -82,13 +67,9 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        String toString = "User{" +
+        return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'';
-        if (!messageList.isEmpty()) {
-            toString = toString + ", messageList=" + messageList;
-        }
-        toString = toString + '}';
-        return toString;
+                ", userName='" + userName + '\''
+                + '}';
     }
 }

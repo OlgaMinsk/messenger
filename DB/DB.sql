@@ -21,6 +21,32 @@ select user_name as name, message from MESSENGER.users, MESSENGER.messages where
 
 
 
+CREATE SCHEMA MESSENGER_TEST;
+create table MESSENGER_TEST.users
+(
+    user_id   bigserial
+        primary key,
+    user_name varchar(50) not null
+        unique
+);
+create table MESSENGER_TEST.messages
+(
+    message_id bigserial
+        primary key,
+    message    varchar not null,
+    sender    bigint,
+    receiver   bigint,
+    FOREIGN KEY (sender)
+        REFERENCES MESSENGER.users (user_id),
+    FOREIGN KEY (receiver)
+        REFERENCES MESSENGER.users (user_id)
+);
+
+
+
+
+
+
 
 
 <?xml version = "1.0" encoding = "UTF-8"?>
@@ -30,8 +56,8 @@ select user_name as name, message from MESSENGER.users, MESSENGER.messages where
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
 
-    <include file="db/changelog/changeset/db.changelog-create-table-users.sql"/>
-    <include file="db/changelog/changeset/db.changelog-create-table-messages.sql"/>
+    <include file="db/changelog/changeset/v002-changelog-create-table-users.sql"/>
+    <include file="db/changelog/changeset/v003-changelog-create-table-messages.sql"/>
 
 </databaseChangeLog >
 

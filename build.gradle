@@ -13,27 +13,25 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.6.2'
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.2'
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootStarterWebVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootStarterDataJpaVersion"
+    implementation "org.junit.jupiter:junit-jupiter:$junitJupiterVersion"
+    implementation "org.springframework.boot:spring-boot-starter-test:$springBootStarterTestVersion"
+    implementation "org.springframework.boot:spring-boot-test:$springBootTestVersion"
+    //testImplementation group: 'org.springframework', name: 'spring-test', version: '5.3.15'
 
-    implementation "javax.annotation:javax.annotation-api:$javaxAnnotationfpiVersion"
-    implementation "org.synyx:messagesource:$messagesourceVersion"
-//2   implementation "org.springframework:spring-aspects:$springAspectsVersion"
-  //  implementation "org.springframework:spring-aop:$springAopVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootStarterDataMongodbVersion"
+
+    compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
+    annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     implementation "org.postgresql:postgresql:$postgresqVersion"
- //1   implementation "org.hibernate:hibernate-core:$hibernateCoreVersion"
-    implementation "org.hibernate:hibernate-ehcache:$hibernateEhcacheVersion"
     implementation "org.liquibase:liquibase-core:$liquibaseCoreVersion"
-    implementation "com.mchange:c3p0:$c3p0Version"
- //   implementation "org.yaml:snakeyaml:$snakeyamlVersion"
+}
 
+test {
+    useJUnitPlatform()
 }
 
 application {
     mainClass = 'com.innowisegroup.messenger.Main'
-}
-
-run {
-    standardInput = System.in
 }
