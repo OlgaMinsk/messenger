@@ -15,10 +15,21 @@ repositories {
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:$springBootStarterWebVersion"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springBootStarterDataJpaVersion"
+    implementation "org.junit.jupiter:junit-jupiter:$junitJupiterVersion"
+    implementation "org.springframework.boot:spring-boot-starter-test:$springBootStarterTestVersion"
+    implementation "org.springframework.boot:spring-boot-test:$springBootTestVersion"
+    //testImplementation group: 'org.springframework', name: 'spring-test', version: '5.3.15'
+
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb:$springBootStarterDataMongodbVersion"
+
     compileOnly "org.mapstruct:mapstruct:$mapstructVersion"
     annotationProcessor "org.mapstruct:mapstruct-processor:$mapstructVersion"
     implementation "org.postgresql:postgresql:$postgresqVersion"
     implementation "org.liquibase:liquibase-core:$liquibaseCoreVersion"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 application {

@@ -1,8 +1,6 @@
 package com.innowisegroup.messenger.exception;
 
-import java.io.IOException;
-
-public class DuplicateUniqueValueException extends IOException {
+public class DuplicateUniqueValueException extends RuntimeException {
     public DuplicateUniqueValueException() {
     }
 

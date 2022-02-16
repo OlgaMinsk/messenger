@@ -39,23 +39,25 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUserName(userCreateRequest.getUserName())) {
             throw new DuplicateUniqueValueException("User with name " + userCreateRequest.getUserName() + " already exists");
         }
+
         return Optional.of(userCreateRequest)
                 .map(userMapper::toUser)
                 .map(userRepository::save)
                 .map(userMapper::toUserResponse)
                 .get();
+        //.orElseThrow(() -> );
     }
 
     @Override
     public UserResponse getUserById(Long userId) throws NotFoundException {
-        checkingUserExistence(userId);
+        checkUserExistence(userId);
         return userMapper.toUserResponse(userRepository.getById(userId));
     }
 
     @Override
     public UserResponse updateUser(Long userId, UserUpdateRequest userUpdateRequest)
             throws NotFoundException, DuplicateUniqueValueException {
-        checkingUserExistence(userId);
+        checkUserExistence(userId);
         if (userRepository.existsByUserName(userUpdateRequest.getUserName())) {
             throw new DuplicateUniqueValueException("Can't update name: user with name " + userUpdateRequest.getUserName() + " already exists.");
         }
@@ -67,11 +69,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) throws NotFoundException {
-        checkingUserExistence(userId);
+        checkUserExistence(userId);
         userRepository.deleteById(userId);
     }
 
-    private void checkingUserExistence(Long userId) throws NotFoundException {
+    @Override
+    public void setAvatarId(Long userId, String avatarId) {
+        checkUserExistence(userId);
+        User user = userRepository.getById(userId);
+        user.setAvatarId(avatarId);
+        userRepository.save(user);
+    }
+
+    @Override
+    public String getAvatarId(Long userId) {
+        checkUserExistence(userId);
+        User user = userRepository.getById(userId);
+        String avatarId = user.getAvatarId();
+        if (avatarId == null) {
+            throw new NotFoundException("The user " + userId + " does not have an avatar");
+        }
+        return avatarId;
+    }
+
+    private void checkUserExistence(Long userId) throws NotFoundException {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User with id " + userId + " does not exist");
         }

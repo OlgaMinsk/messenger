@@ -8,6 +8,7 @@ import java.util.Objects;
 @Cacheable
 //@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "users", schema = "messenger")
+//@Table(name = "users")
 public class User implements Serializable {
     @Id
     @Column(name = "user_id")
@@ -16,6 +17,9 @@ public class User implements Serializable {
 
     @Column(name = "user_name")
     private String userName;
+
+    @Column(name = "avatar_id")
+    private String avatarId;
 
     public User() {
     }
@@ -40,6 +44,14 @@ public class User implements Serializable {
         this.userName = userName;
     }
 
+    public String getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,10 +67,9 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        String toString = "User{" +
+        return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\''
-        + '}';
-        return toString;
+                + '}';
     }
 }

@@ -5,27 +5,24 @@ import com.innowisegroup.messenger.dto.request.MessageUpdateRequest;
 import com.innowisegroup.messenger.dto.response.MessageResponse;
 import com.innowisegroup.messenger.exception.NotFoundException;
 import com.innowisegroup.messenger.service.MessageService;
-import com.innowisegroup.messenger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users/{idUser}/messages")
+@RequestMapping( "messengerAPI/v01/users/{idUser}/messages")
 public class MessageController {
 
-    private final UserService userService;
     private final MessageService messageService;
 
     @Autowired
-    public MessageController(UserService userService, MessageService messageService) {
-        this.userService = userService;
+    public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
 
     @GetMapping
-    public List<MessageResponse> getAllReceivedMessagesOfUser(@PathVariable(value = "idUser") Long userId)
+    public List<MessageResponse> getAllReceivedMessagesOfUser(@PathVariable("idUser") Long userId)
             throws NotFoundException {
         List<MessageResponse> received = messageService.getAllReceivedMessagesOfUser(userId);
         received.addAll(messageService.getAllSentMessagesOfUser(userId));
@@ -40,23 +37,24 @@ public class MessageController {
 
     }
 
-    @GetMapping(value = "/{messageId}")
-    public MessageResponse getMessageById(@PathVariable Long messageId, @PathVariable(value = "idUser") Long userId) throws NotFoundException {
+    @GetMapping("/{messageId}")
+    public MessageResponse getMessageById(@PathVariable Long messageId, @PathVariable("idUser") Long userId)
+            throws NotFoundException {
         return messageService.getMessageById(messageId, userId);
     }
 
-    @PutMapping(value = "/{messageId}")
+    @PutMapping("/{messageId}")
     public MessageResponse updateMessageById(@PathVariable Long messageId,
-                                             @PathVariable(value = "idUser") Long senderId,
+                                             @PathVariable("idUser") Long senderId,
                                              @RequestBody MessageUpdateRequest messageUpdateRequest)
             throws NotFoundException {
         return messageService.updateMessageById(messageId, senderId, messageUpdateRequest);
     }
 
 
-    @DeleteMapping(value = "/{messageId}")
+    @DeleteMapping("/{messageId}")
     public void deleteMessageById(@PathVariable Long messageId,
-                                             @PathVariable(value = "idUser") Long senderId)
+                                             @PathVariable("idUser") Long senderId)
             throws NotFoundException {
         messageService.deleteMessageById(messageId, senderId);
     }

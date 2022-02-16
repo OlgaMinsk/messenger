@@ -20,4 +20,8 @@ public interface UserService {
             throws NotFoundException, DuplicateUniqueValueException;
 
     void deleteUser(Long userId) throws NotFoundException;
+
+    void setAvatarId(Long userId, String avatarId);
+
+    String getAvatarId(Long userId);
 }

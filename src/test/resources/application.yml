@@ -1,0 +1,11 @@
+spring:
+
+  datasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/messenger_test
+    username: postgres
+    password: 123ewq
+  sql:
+    init:
+      platform: postgres

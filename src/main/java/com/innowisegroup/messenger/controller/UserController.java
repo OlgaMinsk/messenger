@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping("messengerAPI/v01/users")
 public class UserController {
 
     private final UserService userService;
@@ -32,7 +32,8 @@ public class UserController {
     @PostMapping
     public UserResponse createNewUser(@RequestBody UserCreateRequest userCreateRequest) {
         if(userCreateRequest.getUserName().isBlank()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name field cannot be empty. Please fill it out");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "The name field cannot be empty. Please fill it out");
         }
         try {
             return userService.createNewUser(userCreateRequest);
@@ -41,7 +42,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/{userId}")
+    @GetMapping("/{userId}")
     public UserResponse getUserById(@PathVariable Long userId) {
         try {
             return userService.getUserById(userId);
@@ -51,7 +52,7 @@ public class UserController {
 
     }
 
-    @PutMapping(value = "/{userId}")
+    @PutMapping("/{userId}")
     public UserResponse updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         if(userUpdateRequest.getUserName().isBlank()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name field cannot be empty. Please fill it out");
@@ -65,7 +66,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(value = "/{userId}")
+    @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         try {
             userService.deleteUser(userId);

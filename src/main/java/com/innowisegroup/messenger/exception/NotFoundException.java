@@ -1,8 +1,6 @@
 package com.innowisegroup.messenger.exception;
 
-import java.io.IOException;
-
-public class NotFoundException extends IOException {
+public class NotFoundException extends RuntimeException{
 
     public NotFoundException() {
         super();

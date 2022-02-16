@@ -35,7 +35,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageResponse> getAllReceivedMessagesOfUser(Long receiverId)
             throws NotFoundException {
-        checkingUserExistence(receiverId);
+        checkUserExistence(receiverId);
         User receiver = userRepository.getById(receiverId);
         return messageRepository.getMessageByReceiver(receiver)
                 .stream()
@@ -47,7 +47,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageResponse> getAllSentMessagesOfUser(Long senderId)
             throws NotFoundException {
-        checkingUserExistence(senderId);
+        checkUserExistence(senderId);
         User sender = userRepository.getById(senderId);
         return messageRepository.getMessageBySender(sender)
                 .stream()
@@ -57,9 +57,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageResponse createMessage(Long senderId, MessageCreateRequest messageCreateRequest) throws NotFoundException {
-        checkingUserExistence(senderId);
+        checkUserExistence(senderId);
         Long receiverId = messageCreateRequest.getReceiverId();
-        checkingUserExistence(receiverId);
+        checkUserExistence(receiverId);
         User sender = userRepository.getById(senderId);
         User receiver = userRepository.getById(receiverId);
         Message message = messageMapper.toMessage(messageCreateRequest);
@@ -71,10 +71,13 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageResponse getMessageById(Long messageId, Long userId) throws NotFoundException {
-        checkingUserExistence(userId);
+        checkUserExistence(userId);
         User user = userRepository.getById(userId);
-        Message message = messageRepository.getById(messageId);
-        if (user != message.getSender() && user != message.getReceiver()) {
+       if(!messageRepository.existsById(messageId)){
+           throw new NotFoundException("Can't find a message with id = " + messageId);
+       }
+               Message message = messageRepository.getById(messageId);
+        if (user.getId() != message.getSender().getId() && user.getId() != message.getReceiver().getId()) {
             throw new NotFoundException("You don't have a message with id = " + messageId);
         }
         return messageMapper.toMessageResponse(message);
@@ -82,7 +85,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageResponse updateMessageById(Long messageId, Long senderId, MessageUpdateRequest messageUpdateRequest) throws NotFoundException {
-        checkingToBeAbleToChangeOrDeleteMessages(messageId, senderId);
+        checkToBeAbleToChangeOrDeleteMessages(messageId, senderId);
         Message message = messageRepository.getById(messageId);
         messageMapper.updateMessage(messageUpdateRequest, message);
         return messageMapper.toMessageResponse(messageRepository.save(message));
@@ -90,23 +93,23 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void deleteMessageById(Long messageId, Long senderId) throws NotFoundException {
-        checkingToBeAbleToChangeOrDeleteMessages(messageId, senderId);
+        checkToBeAbleToChangeOrDeleteMessages(messageId, senderId);
         messageRepository.deleteById(messageId);
     }
 
-    private void checkingToBeAbleToChangeOrDeleteMessages(Long messageId, Long senderId) throws NotFoundException {
-        checkingUserExistence(senderId);
+    private void checkToBeAbleToChangeOrDeleteMessages(Long messageId, Long senderId) throws NotFoundException {
+        checkUserExistence(senderId);
         User sender = userRepository.getById(senderId);
         if (!messageRepository.existsById(messageId)) {
             throw new NotFoundException("No message with id" + messageId);
         }
         Message message = messageRepository.getById(messageId);
-        if (sender != message.getSender()) {
+        if (sender.getId() != message.getSender().getId()) {
             throw new NotFoundException("You don't have a message with id = " + messageId);
         }
     }
 
-    private void checkingUserExistence(Long userId) throws NotFoundException {
+    private void checkUserExistence(Long userId) throws NotFoundException {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User with id " + userId + " does not exist");
         }
