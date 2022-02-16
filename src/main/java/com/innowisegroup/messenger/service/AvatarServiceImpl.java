@@ -41,7 +41,7 @@ public class AvatarServiceImpl implements AvatarService {
             metadata.put(keyUserId, userId);
             metadata.put(keyContentType, multipartFile.getContentType());
 
-            return gridFsTemplate.store(inputStream, multipartFile.getName(), metadata).toHexString();
+            return gridFsTemplate.store(inputStream, multipartFile.getOriginalFilename(), metadata).toHexString();
         } catch (IOException exception) {
             throw new FileNotAvailableException("File " + multipartFile.getName() + " not available.", exception);
         }
