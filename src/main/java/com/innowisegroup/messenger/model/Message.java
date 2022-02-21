@@ -14,7 +14,7 @@ import java.util.Objects;
 public class Message implements Serializable {
     @Id
     @Column(name = "message_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column

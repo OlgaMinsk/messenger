@@ -3,6 +3,7 @@
 /* create table users */
 
 ALTER TABLE MESSENGER.users
-    ADD COLUMN if not exists avatar_id varchar(30);
+    ADD COLUMN if not exists role_id bigint
+    REFERENCES MESSENGER.roles default 1;
 
---rollback    DROP TABLE MESSENGER.users;
+

@@ -12,7 +12,7 @@ import java.util.Objects;
 public class User implements Serializable {
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name = "user_name")
@@ -20,6 +20,12 @@ public class User implements Serializable {
 
     @Column(name = "avatar_id")
     private String avatarId;
+
+    @Column(name = "role_id")
+    private Long role_id;
+
+    @Column(name = "password")
+    private String password;
 
     public User() {
     }
@@ -50,6 +56,14 @@ public class User implements Serializable {
 
     public void setAvatarId(String avatarId) {
         this.avatarId = avatarId;
+    }
+
+    public Long getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(Long role_id) {
+        this.role_id = role_id;
     }
 
     @Override

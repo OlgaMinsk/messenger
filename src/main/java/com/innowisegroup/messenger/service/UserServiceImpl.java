@@ -4,9 +4,12 @@ import com.innowisegroup.messenger.dto.request.UserCreateRequest;
 import com.innowisegroup.messenger.dto.request.UserUpdateRequest;
 import com.innowisegroup.messenger.dto.response.UserResponse;
 import com.innowisegroup.messenger.exception.DuplicateUniqueValueException;
+import com.innowisegroup.messenger.exception.NotCreate;
 import com.innowisegroup.messenger.exception.NotFoundException;
 import com.innowisegroup.messenger.mapper.UserMapper;
+import com.innowisegroup.messenger.model.Role;
 import com.innowisegroup.messenger.model.User;
+import com.innowisegroup.messenger.repository.RoleRepository;
 import com.innowisegroup.messenger.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +22,16 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
+    private final String roleUser="ROLE_USER";
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserMapper userMapper,
+                           RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -39,13 +47,17 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUserName(userCreateRequest.getUserName())) {
             throw new DuplicateUniqueValueException("User with name " + userCreateRequest.getUserName() + " already exists");
         }
-
+        if(!roleRepository.existsByRoleName(roleUser)){
+            throw new NotCreate("Can not find role user! Chek role table");
+        }
+        Role role = roleRepository.findByRoleName(roleUser);
+        Long roleId = role.getId();
         return Optional.of(userCreateRequest)
                 .map(userMapper::toUser)
+                .map(it ->  setRole(it, roleId))
                 .map(userRepository::save)
                 .map(userMapper::toUserResponse)
-                .get();
-        //.orElseThrow(() -> );
+                .orElseThrow(() -> new NotCreate("Can not create user"));
     }
 
     @Override
@@ -96,6 +108,11 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User with id " + userId + " does not exist");
         }
+    }
+
+    private User setRole(User user, Long roleId){
+        user.setRole_id(roleId);
+        return user;
     }
 
 }
