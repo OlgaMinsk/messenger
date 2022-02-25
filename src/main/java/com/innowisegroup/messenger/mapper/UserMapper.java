@@ -13,9 +13,11 @@ public interface UserMapper {
 
     UserResponse toUserResponse(User user);
 
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "avatarId", ignore = true)
     User toUser(UserCreateRequest userCreateRequest);
+
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "avatarId", ignore = true)

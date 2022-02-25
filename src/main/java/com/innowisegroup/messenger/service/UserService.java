@@ -5,6 +5,7 @@ import com.innowisegroup.messenger.dto.request.UserUpdateRequest;
 import com.innowisegroup.messenger.dto.response.UserResponse;
 import com.innowisegroup.messenger.exception.DuplicateUniqueValueException;
 import com.innowisegroup.messenger.exception.NotFoundException;
+import com.innowisegroup.messenger.model.User;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface UserService {
     void setAvatarId(Long userId, String avatarId);
 
     String getAvatarId(Long userId);
+
+    User getByUserName(String userName);
 }

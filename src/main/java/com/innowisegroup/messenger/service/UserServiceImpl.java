@@ -12,6 +12,7 @@ import com.innowisegroup.messenger.model.User;
 import com.innowisegroup.messenger.repository.RoleRepository;
 import com.innowisegroup.messenger.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,15 +24,18 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
-    private final String roleUser="ROLE_USER";
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final String roleUser = "ROLE_USER";
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            UserMapper userMapper,
-                           RoleRepository roleRepository) {
+                           RoleRepository roleRepository,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -47,14 +51,15 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUserName(userCreateRequest.getUserName())) {
             throw new DuplicateUniqueValueException("User with name " + userCreateRequest.getUserName() + " already exists");
         }
-        if(!roleRepository.existsByRoleName(roleUser)){
+        if (!roleRepository.existsByRoleName(roleUser)) {
             throw new NotCreate("Can not find role user! Chek role table");
         }
         Role role = roleRepository.findByRoleName(roleUser);
-        Long roleId = role.getId();
+
         return Optional.of(userCreateRequest)
                 .map(userMapper::toUser)
-                .map(it ->  setRole(it, roleId))
+                .map(it -> setRole(it, role))
+                .map(it -> setPassword(it))
                 .map(userRepository::save)
                 .map(userMapper::toUserResponse)
                 .orElseThrow(() -> new NotCreate("Can not create user"));
@@ -74,6 +79,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUniqueValueException("Can't update name: user with name " + userUpdateRequest.getUserName() + " already exists.");
         }
         User user = userRepository.getById(userId);
+        userUpdateRequest.setPassword(passwordEncoder.encode(userUpdateRequest.getPassword()));
         userMapper.updateUser(userUpdateRequest, user);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
@@ -104,15 +110,28 @@ public class UserServiceImpl implements UserService {
         return avatarId;
     }
 
+    @Override
+    public User getByUserName(String userName) {
+        User user = userRepository.findByUserName(userName);
+        if (user == null) {
+            throw new NotFoundException("User with name " + userName + " does not exist");
+        }
+        return user;
+    }
+
     private void checkUserExistence(Long userId) throws NotFoundException {
         if (!userRepository.existsById(userId)) {
             throw new NotFoundException("User with id " + userId + " does not exist");
         }
     }
 
-    private User setRole(User user, Long roleId){
-        user.setRole_id(roleId);
+    private User setRole(User user, Role role) {
+        user.setRole(role);
         return user;
     }
 
+    private User setPassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return user;
+    }
 }

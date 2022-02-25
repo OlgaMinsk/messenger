@@ -21,11 +21,12 @@ public class User implements Serializable {
     @Column(name = "avatar_id")
     private String avatarId;
 
-    @Column(name = "role_id")
-    private Long role_id;
-
     @Column(name = "password")
     private String password;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     public User() {
     }
@@ -58,12 +59,21 @@ public class User implements Serializable {
         this.avatarId = avatarId;
     }
 
-    public Long getRole_id() {
-        return role_id;
+
+    public String getPassword() {
+        return password;
     }
 
-    public void setRole_id(Long role_id) {
-        this.role_id = role_id;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override

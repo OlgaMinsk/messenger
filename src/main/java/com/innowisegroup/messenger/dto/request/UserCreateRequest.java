@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class UserCreateRequest {
     private String userName;
+    private String password;
 
     public UserCreateRequest() {
     }
@@ -18,6 +19,14 @@ public class UserCreateRequest {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
