@@ -1,6 +1,5 @@
 package com.innowisegroup.messenger.security.jwt;
 
-import com.innowisegroup.messenger.model.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +20,7 @@ public class JwtUser implements UserDetails {
         this.id = id;
         this.userName = userName;
         this.password = password;
+        //todo pass or null?
         this.avatar_id = avatar_id;
         this.authorities = authorities;
     }
@@ -58,5 +58,9 @@ public class JwtUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

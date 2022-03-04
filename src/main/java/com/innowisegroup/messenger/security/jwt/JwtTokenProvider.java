@@ -58,11 +58,11 @@ public class JwtTokenProvider {
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(salt).parseClaimsJws(token).getBody().getSubject();
     }
-
+//TODO константы!
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }

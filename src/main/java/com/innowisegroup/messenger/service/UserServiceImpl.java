@@ -11,8 +11,8 @@ import com.innowisegroup.messenger.model.Role;
 import com.innowisegroup.messenger.model.User;
 import com.innowisegroup.messenger.repository.RoleRepository;
 import com.innowisegroup.messenger.repository.UserRepository;
+import com.innowisegroup.messenger.security.MyPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,17 +24,18 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final MyPasswordEncoder passwordEncoder;
     private final String roleUser = "ROLE_USER";
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            UserMapper userMapper,
-                           RoleRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
+                           RoleRepository roleRepository, MyPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.roleRepository = roleRepository;
+
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateUniqueValueException("Can't update name: user with name " + userUpdateRequest.getUserName() + " already exists.");
         }
         User user = userRepository.getById(userId);
-        userUpdateRequest.setPassword(passwordEncoder.encode(userUpdateRequest.getPassword()));
+        userUpdateRequest.setPassword(passwordEncoder.setPassword(userUpdateRequest.getPassword()));
         userMapper.updateUser(userUpdateRequest, user);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
@@ -131,7 +132,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private User setPassword(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.setPassword(user.getPassword()));
         return user;
     }
 }
