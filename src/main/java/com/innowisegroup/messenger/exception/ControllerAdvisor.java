@@ -1,6 +1,8 @@
 package com.innowisegroup.messenger.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,6 +28,16 @@ public class ControllerAdvisor {
     @ExceptionHandler(AccessRightsException.class)
     public ResponseStatusException handleEmptyFileException(AccessRightsException exception) {
         return new ResponseStatusException(HttpStatus.FORBIDDEN, exception.getMessage());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseStatusException handleBadCredentialsException(BadCredentialsException exception) {
+        return new ResponseStatusException(HttpStatus.UNAUTHORIZED, exception.getMessage());
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseStatusException handleAuthenticationException(AuthenticationException exception) {
+        return new ResponseStatusException(HttpStatus.UNAUTHORIZED, exception.getMessage());
     }
 
 //    @ExceptionHandler(DuplicateUniqueValueException.class)

@@ -2,7 +2,6 @@ package com.innowisegroup.messenger.security;
 
 import com.innowisegroup.messenger.exception.NotFoundException;
 import com.innowisegroup.messenger.model.User;
-import com.innowisegroup.messenger.security.jwt.JwtUser;
 import com.innowisegroup.messenger.security.jwt.JwtUserFactory;
 import com.innowisegroup.messenger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         } catch (NotFoundException exception) {
             throw new UsernameNotFoundException(exception.getMessage(), exception);
         }
-        JwtUser jwtUser = JwtUserFactory.create(user);
-        return jwtUser;
+        return JwtUserFactory.create(user);
     }
 }

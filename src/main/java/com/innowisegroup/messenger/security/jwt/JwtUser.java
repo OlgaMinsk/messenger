@@ -8,6 +8,7 @@ import java.util.Collection;
 public class JwtUser implements UserDetails {
     private final Long id;
     private final String userName;
+
     private final String password;
     private final Long avatar_id;
     private final  Collection<? extends GrantedAuthority> authorities;

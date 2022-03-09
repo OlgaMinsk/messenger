@@ -36,7 +36,7 @@ public class UserController {
 
     @PostMapping("/users")
     public UserResponse createNewUser(@RequestBody UserCreateRequest userCreateRequest) {
-        if(userCreateRequest.getUserName().isBlank()){
+        if (userCreateRequest.getUserName().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The name field cannot be empty. Please fill it out");
         }
@@ -47,7 +47,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)" )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)")
     @GetMapping("/users/{userId}")
     public UserResponse getUserById(@PathVariable Long userId) {
         JwtUser u = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -59,10 +59,10 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)" )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)")
     @PutMapping("/users/{userId}")
     public UserResponse updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        if(userUpdateRequest.getUserName().isBlank()){
+        if (userUpdateRequest.getUserName().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name field cannot be empty. Please fill it out");
         }
         try {
@@ -74,7 +74,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)" )
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)")
     @DeleteMapping("/users/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         try {

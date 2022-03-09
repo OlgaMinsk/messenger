@@ -1,6 +1,6 @@
 package com.innowisegroup.messenger.dto.request;
 
-public class AuthenticationRequestDto {
+public class AuthenticationRequest {
     private String userName;
     private String password;
 
@@ -20,6 +20,6 @@ public class AuthenticationRequestDto {
         this.password = password;
     }
 
-    public AuthenticationRequestDto() {
+    public AuthenticationRequest() {
     }
 }
