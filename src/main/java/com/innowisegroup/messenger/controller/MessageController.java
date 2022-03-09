@@ -6,6 +6,7 @@ import com.innowisegroup.messenger.dto.response.MessageResponse;
 import com.innowisegroup.messenger.exception.NotFoundException;
 import com.innowisegroup.messenger.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,9 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)" )
     public List<MessageResponse> getAllReceivedMessagesOfUser(@PathVariable("idUser") Long userId)
             throws NotFoundException {
         List<MessageResponse> received = messageService.getAllReceivedMessagesOfUser(userId);
@@ -29,7 +32,9 @@ public class MessageController {
         return received;
     }
 
+
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #senderId.equals(authentication.principal.id)" )
     public MessageResponse createMessage(@PathVariable(value = "idUser") Long senderId,
                                          @RequestBody MessageCreateRequest messageCreateRequest)
             throws NotFoundException {
@@ -38,12 +43,14 @@ public class MessageController {
     }
 
     @GetMapping("/{messageId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)" )
     public MessageResponse getMessageById(@PathVariable Long messageId, @PathVariable("idUser") Long userId)
             throws NotFoundException {
         return messageService.getMessageById(messageId, userId);
     }
 
     @PutMapping("/{messageId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #senderId.equals(authentication.principal.id)" )
     public MessageResponse updateMessageById(@PathVariable Long messageId,
                                              @PathVariable("idUser") Long senderId,
                                              @RequestBody MessageUpdateRequest messageUpdateRequest)
@@ -53,6 +60,7 @@ public class MessageController {
 
 
     @DeleteMapping("/{messageId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #senderId.equals(authentication.principal.id)" )
     public void deleteMessageById(@PathVariable Long messageId,
                                              @PathVariable("idUser") Long senderId)
             throws NotFoundException {

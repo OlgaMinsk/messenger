@@ -43,7 +43,7 @@ public class AvatarServiceImpl implements AvatarService {
 
             return gridFsTemplate.store(inputStream, multipartFile.getOriginalFilename(), metadata).toHexString();
         } catch (IOException exception) {
-            throw new FileNotAvailableException("File " + multipartFile.getName() + " not available.", exception);
+            throw new FileNotAvailableException("File " + multipartFile.getOriginalFilename() + " not available.", exception);
         }
     }
 

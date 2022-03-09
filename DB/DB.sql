@@ -112,3 +112,9 @@ DROP TABLE MESSENGER.messages;
 
 
 </databaseChangeLog>
+
+
+
+
+insert into messenger.roles (role_id, role)
+values  (1, 'user'), (2, 'admin');

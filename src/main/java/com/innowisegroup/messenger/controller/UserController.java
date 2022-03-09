@@ -5,16 +5,20 @@ import com.innowisegroup.messenger.dto.request.UserUpdateRequest;
 import com.innowisegroup.messenger.dto.response.UserResponse;
 import com.innowisegroup.messenger.exception.DuplicateUniqueValueException;
 import com.innowisegroup.messenger.exception.NotFoundException;
+import com.innowisegroup.messenger.security.jwt.JwtUser;
 import com.innowisegroup.messenger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("messengerAPI/v01/users")
+@RequestMapping("messengerAPI/v01")
 public class UserController {
 
     private final UserService userService;
@@ -24,14 +28,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/admin/users")
     public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public UserResponse createNewUser(@RequestBody UserCreateRequest userCreateRequest) {
-        if(userCreateRequest.getUserName().isBlank()){
+        if (userCreateRequest.getUserName().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The name field cannot be empty. Please fill it out");
         }
@@ -42,8 +47,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)")
+    @GetMapping("/users/{userId}")
     public UserResponse getUserById(@PathVariable Long userId) {
+        JwtUser u = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             return userService.getUserById(userId);
         } catch (NotFoundException exception) {
@@ -52,9 +59,10 @@ public class UserController {
 
     }
 
-    @PutMapping("/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)")
+    @PutMapping("/users/{userId}")
     public UserResponse updateUser(@PathVariable Long userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        if(userUpdateRequest.getUserName().isBlank()){
+        if (userUpdateRequest.getUserName().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name field cannot be empty. Please fill it out");
         }
         try {
@@ -66,7 +74,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)")
+    @DeleteMapping("/users/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         try {
             userService.deleteUser(userId);

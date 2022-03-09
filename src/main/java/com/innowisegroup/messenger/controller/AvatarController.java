@@ -5,6 +5,7 @@ import com.innowisegroup.messenger.service.AvatarService;
 import com.innowisegroup.messenger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ public class AvatarController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)" )
     public void saveAvatar(@PathVariable(value = "idUser") Long userId,
                                              @RequestParam(value = "file") MultipartFile multipartFile) {
         String avatarId = avatarService.saveAvatar(multipartFile, userId);
@@ -30,6 +32,7 @@ public class AvatarController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #userId.equals(authentication.principal.id)" )
     public ResponseEntity<byte[]> getAvatar(@PathVariable(value = "idUser") Long userId) {
         String avatarId = userService.getAvatarId(userId);
         AvatarResponse avatarResponse = avatarService.findAvatarById(userId, avatarId);
