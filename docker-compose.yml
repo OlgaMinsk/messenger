@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3
+    container_name: 'messenger_postgres'
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "123ewq"
+    volumes:
+      - mess:/var/lib/postgresql/data
+    ports:
+    - 5432:5432
+
+
+  mongodb_container:
+    image: mongo:5.0.5
+    ports:
+      - 27017:27017
+
+  app:
+    build: ./
+    container_name: 'messenger'
+    volumes:
+      - app:/apppp
+    ports:
+      - 8080:8080
+volumes:
+  mess:
+  app:

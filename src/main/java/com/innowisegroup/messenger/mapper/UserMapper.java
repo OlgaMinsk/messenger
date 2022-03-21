@@ -16,10 +16,12 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "avatarId", ignore = true)
+    @Mapping(target = "role", ignore = true)
     User toUser(UserCreateRequest userCreateRequest);
 
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "avatarId", ignore = true)
+    @Mapping(target = "role", ignore = true)
     void updateUser(UserUpdateRequest userUpdateRequest, @MappingTarget User user);
 }
